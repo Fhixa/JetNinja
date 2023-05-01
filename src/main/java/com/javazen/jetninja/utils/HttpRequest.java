@@ -20,9 +20,28 @@ public class HttpRequest {
         }
 
     }
-    public Response postRequest(String url, String cookie) throws  IOException{
+
+
+    public String getRequestWBody(String url) throws IOException {
+        // Build the GET request using the provided URL
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        // Execute the request and retrieve the response
+        try (Response response = client.newCall(request).execute()) {
+            // If the response is not successful, throw an IOException
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+
+            return response.body().string();
+        }
+    }
+
+
+    public Response postRequest(String url, String cookie, String temp_mail) throws  IOException{
         RequestBody body = new FormBody.Builder()
-                .add("email", "terah14907@in2reach.com")
+                .add("email", temp_mail)
                 .build();
 
         Request request = new Request.Builder()
