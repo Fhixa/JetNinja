@@ -3,6 +3,7 @@ package com.zenith.JetNinja.utils;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class HttpRequest {
@@ -21,6 +22,19 @@ public class HttpRequest {
 
     }
 
+    public Response getRequestWithCookies(String url, List<String> cookies) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", cookies.get(0) + ";" + cookies.get(1))
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            return response;
+        }
+
+    }
 
     public String getRequestWBody(String url) throws IOException {
         // Build the GET request using the provided URL

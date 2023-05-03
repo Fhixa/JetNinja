@@ -4,8 +4,12 @@ import com.zenith.JetNinja.constants.Colors;
 import com.zenith.JetNinja.model.GeneratedEmail;
 import com.zenith.JetNinja.model.MailData;
 import com.zenith.JetNinja.utils.*;
+import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Component
@@ -16,6 +20,11 @@ public class GetAccount implements CommandLineRunner {
     private  final  GrabVerificationLink grabVerificationLink;
     private final TypeWriter typeWriter;
     private  final PreLoader preLoader;
+
+    @Autowired
+    private HttpRequest httpRequest;
+    @Autowired
+    private CookieExtractor cookieExtractor;
 
     public GetAccount(CookieScraper cookieScraper, SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader) {
         this.cookieScraper = cookieScraper;
@@ -29,8 +38,6 @@ public class GetAccount implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        //test
-
         //tool starts here..
         typeWriter.type(Colors.TEXT_CYAN+ "Developed by Zenith\n" + Colors.TEXT_RESET, 100);
         typeWriter.type("∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎\n", 100);
@@ -40,7 +47,9 @@ public class GetAccount implements CommandLineRunner {
             //grab cookie
             typeWriter.type("Checking requirements....", 50);
             preLoader.start();
-            String cookie = cookieScraper.getCookie("https://account.jetbrains.com/signup");
+            Response response = httpRequest.getRequest("https://account.jetbrains.com/signup");
+            List<String> cookies = cookieScraper.getCookies(response);
+            String cookie = cookieExtractor.getCookieUrlValue(cookies);
 
             //generate temp email
             GeneratedEmail generatedEmail = emailGetter.generateMail("https://api.tempmail.lol/generate");
@@ -74,7 +83,11 @@ public class GetAccount implements CommandLineRunner {
             String verificationLink = grabVerificationLink.getLink(mailData);
             preLoader.stop();
             Status.success();
-            System.out.println(verificationLink);
+
+
+            Response registerForm = httpRequest.getRequestWithCookies(verificationLink, cookies);
+            System.out.println(registerForm);
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -28,12 +29,14 @@ public class CookieScraper {
      * @return the cookie value
      * @throws IOException if the request fails
      */
-    public String getCookie(String url) throws IOException {
-        String jbCookie;
-        Response response = httpRequest.getRequest(url);
-        jbCookie = cookieExtractor.getCookie(response);
 
-        return jbCookie;
+    public List<String> getCookies(Response response) {
+        List<String> grabbedCookies = response.headers("Set-Cookie");
+        System.out.println(grabbedCookies);
+        if (grabbedCookies.isEmpty()) {
+            throw new IllegalArgumentException("Response does not contain any cookies.");
+        }
+        return grabbedCookies;
     }
 
 }

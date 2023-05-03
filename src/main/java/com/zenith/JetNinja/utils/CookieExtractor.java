@@ -15,13 +15,11 @@ public class CookieExtractor {
      * @return the cookie value
      * @throws IllegalArgumentException if the response does not contain any cookies
      */
-    public String getCookie(Response response) {
-        List<String> grabbedCookies = response.headers("Set-Cookie");
-        if (grabbedCookies.isEmpty()) {
-            throw new IllegalArgumentException("Response does not contain any cookies.");
-        }
-        String mainCookie = grabbedCookies.get(0);
-        String[] cookieParts = mainCookie.split("=");
+
+    public String getCookieUrlValue(List<String> grabbedCookies){
+
+        String stCookie = grabbedCookies.get(0);
+        String[] cookieParts = stCookie.split("=");
         String cookieValue = cookieParts[1];
         String[] cookieValueParts = cookieValue.split(";");
 
