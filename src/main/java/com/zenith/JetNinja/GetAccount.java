@@ -3,9 +3,6 @@ package com.zenith.JetNinja;
 import com.zenith.JetNinja.constants.Colors;
 import com.zenith.JetNinja.model.MailData;
 import com.zenith.JetNinja.utils.*;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,16 +19,18 @@ public class GetAccount implements CommandLineRunner {
     private final TypeWriter typeWriter;
     private  final PreLoader preLoader;
     private final HttpRequest httpRequest;
-    private  final Register confirmEmaill;
+    private  final Register register;
+    private final Login login;
 
-    public GetAccount(SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader, HttpRequest httpRequest, Register confirmEmaill) {
+    public GetAccount(SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader, HttpRequest httpRequest, Register register, Login login) {
         this.sendVerificationEmail = sendVerificationEmail;
         this.emailGetter = emailGetter;
         this.grabVerificationLink = grabVerificationLink;
         this.typeWriter = typeWriter;
         this.preLoader = preLoader;
         this.httpRequest = httpRequest;
-        this.confirmEmaill = confirmEmaill;
+        this.register = register;
+        this.login = login;
     }
 
     @Override
@@ -84,19 +83,26 @@ public class GetAccount implements CommandLineRunner {
             Status.success();
 
             //get form submit url
-            String badFormUrl = confirmEmaill.getFormUrl(verificationLink, jbCookie, stCookie);
+            String badFormUrl = register.getFormUrl(verificationLink, jbCookie, stCookie);
             String formSubmitUrl = badFormUrl.replace("amp;", "");
             System.out.println(formSubmitUrl);
 
-            //submit form with user details and login
-            List<String> loginDetails = confirmEmaill.submitForm(formSubmitUrl, jbCookie, stCookie);
-            if(loginDetails != null){
-                String OauthUrl = sc.next();
-                Map<String, String> responseMap = httpRequest.getRequest(OauthUrl, "JSESSIONID-JBA=" + jbCookie + ";_st-JBA=" + stCookie);
+            //submit form with user details
+            List<String> loginDetails = register.submitForm(formSubmitUrl, jbCookie, stCookie);
+            String username = loginDetails.get(0);
+            String password = loginDetails.get(1);
 
-                System.out.println(responseMap);
+            //login
+            System.out.print("Enter url: ");
+            String OauthUrl = sc.next();
+            List<String> loginUrls = login.getLoginUrl(OauthUrl, jbCookie, stCookie);
+            System.out.println(loginUrls);
 
-            }
+            String submitUrl = loginUrls.get(0);
+            String challengeId = loginUrls.get(1);
+
+            //submit
+            login.submit(submitUrl, jbCookie, stCookie, challengeId, username, password);
 
         } catch (Exception e) {
             e.printStackTrace();
