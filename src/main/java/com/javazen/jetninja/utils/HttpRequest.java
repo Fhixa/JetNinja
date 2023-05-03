@@ -39,11 +39,7 @@ public class HttpRequest {
     }
 
 
-    public Response postRequest(String url, String cookie, String temp_mail) throws  IOException{
-        RequestBody body = new FormBody.Builder()
-                .add("email", temp_mail)
-                .build();
-
+    public Response postRequest(String url, String cookie, RequestBody body) throws  IOException{
         Request request = new Request.Builder()
                 .url(url)
                 .header("Cookie", cookie)

@@ -1,73 +1,73 @@
 package com.javazen.jetninja;
 
-import com.javazen.jetninja.model.Email;
+import com.javazen.jetninja.constants.Colors;
 import com.javazen.jetninja.model.GeneratedEmail;
 import com.javazen.jetninja.model.MailData;
-import com.javazen.jetninja.utils.CookieScraper;
-import com.javazen.jetninja.utils.MailGetter;
-import com.javazen.jetninja.utils.HttpRequest;
-import okhttp3.*;
+import com.javazen.jetninja.utils.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Scanner;
+
 
 @Component
 public class GetAccount implements CommandLineRunner {
     private final CookieScraper cookieScraper;
-    private final HttpRequest httpRequest;
+    private final SendVerificationEmail sendVerificationEmail;
     private  final MailGetter emailGetter;
+    private  final  GrabVerificationLink grabVerificationLink;
+    private final TypeWriter typeWriter;
 
-    public GetAccount(CookieScraper cookieScraper, HttpRequest httpRequest, MailGetter emailGetter) {
+    public GetAccount(CookieScraper cookieScraper, SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter) {
         this.cookieScraper = cookieScraper;
-        this.httpRequest = httpRequest;
+        this.sendVerificationEmail = sendVerificationEmail;
         this.emailGetter = emailGetter;
+        this.grabVerificationLink = grabVerificationLink;
+        this.typeWriter = typeWriter;
     }
 
     @Override
     public void run(String... args) {
+
+        //tool starts here..
+        typeWriter.type(Colors.TEXT_PURPLE + "Developed by Zenith\n" + Colors.TEXT_RESET, 100);
+        typeWriter.type("∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎\n", 100);
+
+
         try {
-            //get cookie
+            //grab cookie
+            typeWriter.type(Colors.TEXT_CYAN + "Checking requirements...." + Colors.TEXT_RESET, 50);
             String cookie = cookieScraper.getCookie("https://account.jetbrains.com/signup");
 
-
-            //generate temp mail
+            //generate temp email
             GeneratedEmail generatedEmail = emailGetter.generateMail("https://api.tempmail.lol/generate");
+            Status.success();
+            /*String email = generatedEmail.getAddress();
+            String token = generatedEmail.getToken();*/
 
-            //send verification link to mail
-            Response jbResponse = httpRequest.postRequest("https://account.jetbrains.com/signup-request?_st=" + cookie, "_st-JBA=" + cookie, generatedEmail.getAddress());
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Email And Token: ");
+            String email = sc.next();
+            String token = sc.next();
 
-
-            //get response status code
-            int responseStatus = jbResponse.code();
-
-            //check response status code
-            if (responseStatus != 200) {
-                System.out.println("ERROR");
-            }else{
-                System.out.println(generatedEmail.getToken());
-                String token = generatedEmail.getToken();
-                String url = "https://api.tempmail.lol/auth/" + token;
-
-                MailData mailData = emailGetter.grabMail(url);
-                String htmlConfirmAcc = mailData.getEmail().get(0).getHtml();
-                String regex = "<a href=\"(.*?)\">Confirm your account</a>";
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(htmlConfirmAcc);
-
-                String text = "";
-
-                if (matcher.find()) {
-                    text = matcher.group(1);
-                }
-
-                System.out.println(text);
+            //send verification link to email
+            System.out.print("Preparing to bypass email verification....");
+            boolean isSentVerificationEmail = sendVerificationEmail.send(email, cookie);
+            if(isSentVerificationEmail){
+                Status.success();
+                System.out.print("Bypassing email verification....");
             }
 
-        }catch (IOException e){
+            //get email message data
+            String url = "https://api.tempmail.lol/auth/" + token;
+            MailData mailData = emailGetter.grabMail(url);
+
+            //grab link from email
+            String verificationLink = grabVerificationLink.getLink(mailData);
+            Status.success();
+            System.out.println(verificationLink);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
