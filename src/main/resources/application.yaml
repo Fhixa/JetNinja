@@ -1,0 +1,6 @@
+spring:
+  main:
+    log-startup-info: false
+    banner-mode: console
+  banner:
+    location: banner.txt

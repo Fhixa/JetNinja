@@ -12,15 +12,6 @@ import java.util.List;
  */
 @Component
 public class CookieScraper {
-    private final HttpRequest httpRequest;
-    private final CookieExtractor cookieExtractor;
-
-    public CookieScraper(HttpRequest httpRequest, CookieExtractor cookieExtractor) {
-        this.httpRequest = httpRequest;
-        this.cookieExtractor = cookieExtractor;
-    }
-
-
 
     /**
      * Makes an HTTP request to the given URL and extracts the cookie value from the response.
@@ -32,9 +23,8 @@ public class CookieScraper {
 
     public List<String> getCookies(Response response) {
         List<String> grabbedCookies = response.headers("Set-Cookie");
-        System.out.println(grabbedCookies);
         if (grabbedCookies.isEmpty()) {
-            throw new IllegalArgumentException("Response does not contain any cookies.");
+            return null;
         }
         return grabbedCookies;
     }

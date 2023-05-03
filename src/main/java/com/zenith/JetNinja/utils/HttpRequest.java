@@ -3,53 +3,50 @@ package com.zenith.JetNinja.utils;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class HttpRequest {
     private static final OkHttpClient client = new OkHttpClient();
 
-    public Response getRequest(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+    private final CookieScraper cookieScraper;
+    private final CookieExtractor cookieExtractor;
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-            return response;
-        }
-
+    public HttpRequest(CookieScraper cookieScraper, CookieExtractor cookieExtractor) {
+        this.cookieScraper = cookieScraper;
+        this.cookieExtractor = cookieExtractor;
     }
 
-    public Response getRequestWithCookies(String url, List<String> cookies) throws IOException {
+    public Map<String, String> getRequest(String url , String ReqCookie) throws IOException {
+        Map<String, String> responseMap = new HashMap<>();
+
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Cookie", cookies.get(0) + ";" + cookies.get(1))
+                .addHeader("Cookie", ReqCookie)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            return response;
+            List<String> cookies = cookieScraper.getCookies(response);
+
+            String stCookie = "";
+            String jbCookie = "";
+
+            if(cookies != null){
+                stCookie = cookieExtractor.getCookieValue(cookies.get(0));
+                jbCookie = cookieExtractor.getCookieValue(cookies.get(1));
+            }
+
+            responseMap.put("stCookie", stCookie);
+            responseMap.put("jbCookie", jbCookie);
+            responseMap.put("body", response.body().string());
+
+            return responseMap;
         }
 
-    }
-
-    public String getRequestWBody(String url) throws IOException {
-        // Build the GET request using the provided URL
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        // Execute the request and retrieve the response
-        try (Response response = client.newCall(request).execute()) {
-            // If the response is not successful, throw an IOException
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-
-            return response.body().string();
-        }
     }
 
 
@@ -62,7 +59,6 @@ public class HttpRequest {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
 //            System.out.println(response.body());
             return response;
         }

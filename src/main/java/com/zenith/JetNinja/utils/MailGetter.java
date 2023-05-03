@@ -7,22 +7,21 @@ import com.zenith.JetNinja.model.MailData;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class MailGetter {
-    private final PreLoader preLoader;
     private final HttpRequest httpRequest;
-    public MailGetter(PreLoader preLoader, HttpRequest httpRequest) {
-        this.preLoader = preLoader;
+    public MailGetter(HttpRequest httpRequest) {
         this.httpRequest = httpRequest;
     }
 
     //Email generator
     public GeneratedEmail generateMail(String url)  {
 
-        String responseBody = null;
+        Map<String, String> response = null;
         try {
-            responseBody = httpRequest.getRequestWBody(url);
+            response = httpRequest.getRequest(url, "");
         } catch (IOException e) {
             Status.error("Rate limited. Please use VPN or PROXY and try again.");
             System.exit(0);
@@ -32,17 +31,17 @@ public class MailGetter {
 
         Gson gson = builder.create();
 
-        return gson.fromJson(responseBody, GeneratedEmail.class);
+        return gson.fromJson(response.get("body"), GeneratedEmail.class);
 
     }
 
     //Email grabber
     public MailData grabMail(String url) throws IOException {
 
-        String responseBody = "{\"email\":[]}";
+        String response = "{\"email\":[]}";
 
-        while (responseBody.equals("{\"email\":[]}")) {
-            responseBody = httpRequest.getRequestWBody(url);
+        while (response.equals("{\"email\":[]}")) {
+            response = httpRequest.getRequest(url, "").get("body");
         }
 
         //map data to json
@@ -51,7 +50,7 @@ public class MailGetter {
         Gson gson = builder.create();
 
         //return mail data
-        return gson.fromJson(responseBody, MailData.class);
+        return gson.fromJson(response, MailData.class);
 
     }
 

@@ -1,9 +1,7 @@
 package com.zenith.JetNinja.utils;
 
-import okhttp3.Response;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public class CookieExtractor {
@@ -16,10 +14,9 @@ public class CookieExtractor {
      * @throws IllegalArgumentException if the response does not contain any cookies
      */
 
-    public String getCookieUrlValue(List<String> grabbedCookies){
+    public String getCookieValue(String cookie){
 
-        String stCookie = grabbedCookies.get(0);
-        String[] cookieParts = stCookie.split("=");
+        String[] cookieParts = cookie.split("=");
         String cookieValue = cookieParts[1];
         String[] cookieValueParts = cookieValue.split(";");
 
