@@ -1,6 +1,6 @@
-package com.javazen.jetninja;
+package com.zenith.JetNinja;
 
-import com.javazen.jetninja.model.MailData;
+import com.zenith.JetNinja.model.MailData;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -11,7 +11,7 @@ public class GrabVerificationLink {
     private String text = null;
     public String getLink(MailData mailData){
 
-            String htmlConfirmAcc = mailData.getEmail().get(0).getHtml();
+            String htmlConfirmAcc = mailData.email().get(0).html();
             String regex = "<a href=\"(.*?)\">Confirm your account</a>";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(htmlConfirmAcc);

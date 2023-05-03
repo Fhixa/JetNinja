@@ -8,11 +8,11 @@
         <version>3.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.javazen</groupId>
-    <artifactId>jetninja</artifactId>
+    <groupId>com.zenith</groupId>
+    <artifactId>JetNinja</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jetninja</name>
-    <description>jetninja</description>
+    <name>JetNinja</name>
+    <description>JetNinja - jetbrains trial cracker by Zenith</description>
     <properties>
         <java.version>20</java.version>
     </properties>
@@ -47,6 +47,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>JetNinja</finalName>
     </build>
 
 </project>

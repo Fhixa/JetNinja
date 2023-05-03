@@ -1,6 +1,6 @@
-package com.javazen.jetninja.utils;
+package com.zenith.JetNinja.utils;
 
-import com.javazen.jetninja.constants.Colors;
+import com.zenith.JetNinja.constants.Colors;
 
 public class Status {
     public static void error(String text){

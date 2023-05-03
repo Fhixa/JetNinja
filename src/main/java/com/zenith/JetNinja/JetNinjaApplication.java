@@ -1,12 +1,12 @@
-package com.javazen.jetninja;
+package com.zenith.JetNinja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication()
-public class JetninjaApplication{
+public class JetNinjaApplication {
     public static void main(String[] args){
-        SpringApplication.run(JetninjaApplication.class, args);
+        SpringApplication.run(JetNinjaApplication.class, args);
 
     }
 

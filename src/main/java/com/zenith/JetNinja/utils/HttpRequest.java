@@ -1,4 +1,4 @@
-package com.javazen.jetninja.utils;
+package com.zenith.JetNinja.utils;
 
 import okhttp3.*;
 import org.springframework.stereotype.Component;

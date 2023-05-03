@@ -1,6 +1,6 @@
-package com.javazen.jetninja;
+package com.zenith.JetNinja;
 
-import com.javazen.jetninja.utils.HttpRequest;
+import com.zenith.JetNinja.utils.HttpRequest;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;

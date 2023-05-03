@@ -1,4 +1,4 @@
-package com.javazen.jetninja.constants;
+package com.zenith.JetNinja.constants;
 
 import org.springframework.stereotype.Component;
 

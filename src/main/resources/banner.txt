@@ -3,7 +3,4 @@ ${AnsiColor.BRIGHT_MAGENTA}${AnsiStyle.BOLD}     ,--.         ,--.  ,--.  ,--.,-
 ,--. |  || .-. :'-.  .-'|  |' '  |,--.|      \  ,--.' ,-.  |
 |  '-'  /\   --.  |  |  |  | `   ||  ||  ||  |  |  |\ '-'  |
  `-----'  `----'  `--'  `--'  `--'`--'`--''--'.-'  / `--`--'
-                                              '---'           wow
-
-${AnsiStyle.NORMAL}
-${AnsiBackground.DEFAULT}
+                                              '---'           wow${AnsiStyle.NORMAL}${AnsiBackground.DEFAULT}
