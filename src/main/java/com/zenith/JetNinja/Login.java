@@ -29,11 +29,14 @@ public class Login {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(bodyData);
 
-        String challengeCodeRegex = "login_challenge=(.*?)";
+        String challengeCodeRegex = "login_challenge=(\\w+)";
         Pattern chPattern = Pattern.compile(challengeCodeRegex);
-        Matcher chMatcher = pattern.matcher(OauthUrl);
+        Matcher chMatcher = chPattern.matcher(OauthUrl);
 
-        return List.of("https://account.jetbrains.com" + ((matcher.find()) ? matcher.group(1) : ""), ((chMatcher.find()) ? chMatcher.group(1) : ""));
+        String urlPart = matcher.find() ? matcher.group(1) : "";
+        String challengeId = chMatcher.find() ? chMatcher.group(1) : "";
+
+        return List.of("https://account.jetbrains.com" + urlPart, challengeId);
 
     }
     public void submit(String url, String jbCookie, String stCookie, String challenge, String username, String password) throws IOException {

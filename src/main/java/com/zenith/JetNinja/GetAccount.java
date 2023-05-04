@@ -1,6 +1,7 @@
 package com.zenith.JetNinja;
 
 import com.zenith.JetNinja.constants.Colors;
+import com.zenith.JetNinja.model.GeneratedEmail;
 import com.zenith.JetNinja.model.MailData;
 import com.zenith.JetNinja.utils.*;
 import org.springframework.boot.CommandLineRunner;
@@ -44,22 +45,22 @@ public class GetAccount implements CommandLineRunner {
         try {
             //grab cookie
             typeWriter.type("Checking requirements....", 50);
-            /*preLoader.start();*/
+            preLoader.start();
             Map<String, String> response = httpRequest.getRequest("https://account.jetbrains.com/signup", "");
             String stCookie = response.get("stCookie");
             String jbCookie = response.get("jbCookie");
 
             //generate temp email
-            /*GeneratedEmail generatedEmail = emailGetter.generateMail("https://api.tempmail.lol/generate");
+            GeneratedEmail generatedEmail = emailGetter.generateMail("https://api.tempmail.lol/generate");
             preLoader.stop();
             Status.success();
             String email = generatedEmail.address();
-            String token = generatedEmail.token();*/
+            String token = generatedEmail.token();
 
-            Scanner sc = new Scanner(System.in);
+            /*Scanner sc = new Scanner(System.in);
             System.out.print("Email And Token: ");
             String email = sc.next();
-            String token = sc.next();
+            String token = sc.next();*/
 
             //send verification link to email
             preLoader.start();
@@ -85,7 +86,6 @@ public class GetAccount implements CommandLineRunner {
             //get form submit url
             String badFormUrl = register.getFormUrl(verificationLink, jbCookie, stCookie);
             String formSubmitUrl = badFormUrl.replace("amp;", "");
-            System.out.println(formSubmitUrl);
 
             //submit form with user details
             List<String> loginDetails = register.submitForm(formSubmitUrl, jbCookie, stCookie);
@@ -93,10 +93,10 @@ public class GetAccount implements CommandLineRunner {
             String password = loginDetails.get(1);
 
             //login
+            Scanner sc = new Scanner(System.in);
             System.out.print("Enter url: ");
             String OauthUrl = sc.next();
             List<String> loginUrls = login.getLoginUrl(OauthUrl, jbCookie, stCookie);
-            System.out.println(loginUrls);
 
             String submitUrl = loginUrls.get(0);
             String challengeId = loginUrls.get(1);
