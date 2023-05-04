@@ -1,6 +1,5 @@
 package com.zenith.JetNinja.utils.automation;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -22,13 +21,13 @@ public class IDEexecutor {
 
         switch (osDetector.detectOS()) {
             case WINDOWS:
-                automateOPEN("Telegram", KeyEvent.VK_WINDOWS, KeyEvent.VK_ENTER);
+                automateExec("Telegram", KeyEvent.VK_WINDOWS, KeyEvent.VK_ENTER);
                 break;
             case MAC:
-                automateOPEN("Notepad", KeyEvent.VK_META, KeyEvent.VK_SPACE);
+                automateExec("Telegram", KeyEvent.VK_META, KeyEvent.VK_SPACE);
                 break;
             case LINUX:
-                automateOPEN("TeamViewer", KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE);
+                automateExec("Telegram", KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE);
                 break;
             default:
                 System.out.println("Unsupported operating system");
@@ -36,7 +35,7 @@ public class IDEexecutor {
         }
 
     }
-    private static void automateOPEN( String searchQuery,int OS_SEARCH_BAR, int OS_ENTER) throws InterruptedException, AWTException {
+    private static void automateExec(String searchQuery, int OS_SEARCH_BAR, int OS_ENTER) throws InterruptedException, AWTException {
         Robot robot = new Robot();
 
         robot.keyPress(OS_SEARCH_BAR);
