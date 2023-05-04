@@ -1,5 +1,7 @@
 package com.zenith.JetNinja;
 
+import com.zenith.JetNinja.authentication.Login;
+import com.zenith.JetNinja.authentication.Register;
 import com.zenith.JetNinja.constants.Colors;
 import com.zenith.JetNinja.model.MailData;
 import com.zenith.JetNinja.utils.*;
