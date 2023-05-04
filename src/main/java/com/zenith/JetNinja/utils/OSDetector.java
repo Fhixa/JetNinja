@@ -4,42 +4,57 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.*;
-import java.util.List;
-import java.util.stream.*;
 
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class OSDetector {
-    public static void detect() throws IOException {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            System.out.println("Windows");
-        } else if (os.contains("osx")) {
-            System.out.println("MacOS");
-        } else if (os.contains("nix") || os.contains("aix") || os.contains("nux")) {
 
-        }
+    private enum OperatingSystem {
+        WINDOWS,
+        MAC,
+        LINUX,
+        UNKNOWN
     }
 
-    public static void main(String[] args) throws IOException, AWTException, InterruptedException {
-        String searchQuery = "IntelliJ IDEA 2023.1";
+    private static OperatingSystem getOperatingSystem() throws AWTException, InterruptedException {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            return OperatingSystem.WINDOWS;
+        } else if (osName.contains("mac")) {
+            return OperatingSystem.MAC;
+        } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix")) {
+            return OperatingSystem.LINUX;
+        } else {
+            return OperatingSystem.UNKNOWN;
+        }
+
+    }
+
+        public static void detect() throws AWTException, InterruptedException {
+            switch (getOperatingSystem()) {
+                case WINDOWS:
+                    automateOPEN("Telegram", KeyEvent.VK_WINDOWS, KeyEvent.VK_ENTER);
+                    break;
+                case MAC:
+                    automateOPEN("Notepad", KeyEvent.VK_META, KeyEvent.VK_SPACE);
+                    break;
+                case LINUX:
+                    automateOPEN("TeamViewer", KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE);
+
+                    break;
+                default:
+                    System.out.println("Unsupported operating system");
+                    return;
+            }
+
+        }
+
+    private static void automateOPEN( String searchQuery,int OS_SEARCH_BAR, int OS_ENTER) throws InterruptedException, AWTException {
         Robot robot = new Robot();
 
-
-        robot.keyPress(KeyEvent.VK_WINDOWS);
-        robot.keyRelease(KeyEvent.VK_WINDOWS);
+        robot.keyPress(OS_SEARCH_BAR);
+        robot.keyRelease(OS_SEARCH_BAR);
         Thread.sleep(1000);
-
 
         for (char c : searchQuery.toCharArray()) {
             robot.keyPress(Character.toUpperCase(c));
@@ -47,9 +62,14 @@ public class OSDetector {
             Thread.sleep(50);
         }
 
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyPress(OS_ENTER);
+        robot.keyRelease(OS_ENTER);
     }
-}
+
+    public static void main(String[] args) throws AWTException, InterruptedException {
+        detect();
+    }
+    }
+
 
 
