@@ -1,5 +1,7 @@
 package com.zenith.JetNinja.utils;
 
+import com.zenith.JetNinja.utils.CookieManipulation.CookieExtractor;
+import com.zenith.JetNinja.utils.CookieManipulation.CookieScraper;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 import java.io.IOException;

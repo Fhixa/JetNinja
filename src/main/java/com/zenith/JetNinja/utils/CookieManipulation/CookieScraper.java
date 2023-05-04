@@ -1,4 +1,4 @@
-package com.zenith.JetNinja.utils;
+package com.zenith.JetNinja.utils.CookieManipulation;
 
 import okhttp3.*;
 import org.springframework.stereotype.Component;
