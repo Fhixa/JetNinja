@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 
 @Component
@@ -93,14 +92,15 @@ public class GetAccount implements CommandLineRunner {
             String password = loginDetails.get(1);
 
             //login
-            Scanner sc = new Scanner(System.in);
+            /*Scanner sc = new Scanner(System.in);
             System.out.print("Enter url: ");
             String OauthUrl = sc.next();
 
             String challengeId = login.getChallengeId(OauthUrl);
-
+*/
             //submit
-            login.submit(jbCookie, stCookie, challengeId, username, password);
+            /*login.submit(jbCookie, stCookie, challengeId, username, password);*/
+            System.out.println("username: " + Colors.TEXT_GREEN + username + Colors.TEXT_RESET + "\npassword: " + Colors.TEXT_GREEN + password + Colors.TEXT_RESET);
 
         } catch (Exception e) {
             e.printStackTrace();

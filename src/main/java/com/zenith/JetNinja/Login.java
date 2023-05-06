@@ -37,7 +37,6 @@ public class Login {
                 .build();
 
         Response response = httpRequest.postRequest(url, "JSESSIONID-JBA=" + jbCookie + ";_st-JBA=" + stCookie, body);
-        System.out.println(response.headers("Set-Cookie"));
 
     }
 }

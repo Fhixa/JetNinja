@@ -10,15 +10,15 @@ public class PreLoader {
 
     private static void loader() throws InterruptedException{
         System.out.print("-");
-        sleep(300);
+        sleep(100);
         System.out.print("\b");
 
         System.out.print("\\");
-        sleep(300);
+        sleep(100);
         System.out.print("\b");
 
         System.out.print("/");
-        sleep(300);
+        sleep(100);
         System.out.print("\b");
     }
 
