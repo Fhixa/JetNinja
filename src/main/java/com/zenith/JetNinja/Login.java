@@ -7,8 +7,6 @@ import okhttp3.Response;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,26 +18,17 @@ public class Login {
         this.httpRequest = httpRequest;
     }
 
-    public List<String> getLoginUrl(String OauthUrl, String jbCookie, String stCookie) throws IOException {
-
-        Map<String, String> responseMap = httpRequest.getRequest(OauthUrl, "JSESSIONID-JBA=" + jbCookie + ";_st-JBA=" + stCookie);
-
-        String bodyData = responseMap.get("body");
-        String regex = "<form method=\"post\" action=\"(.*?)\" class=\"";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(bodyData);
+    public String getChallengeId(String OauthUrl) {
 
         String challengeCodeRegex = "login_challenge=(\\w+)";
         Pattern chPattern = Pattern.compile(challengeCodeRegex);
         Matcher chMatcher = chPattern.matcher(OauthUrl);
 
-        String urlPart = matcher.find() ? matcher.group(1) : "";
-        String challengeId = chMatcher.find() ? chMatcher.group(1) : "";
-
-        return List.of("https://account.jetbrains.com" + urlPart, challengeId);
+        return chMatcher.find() ? chMatcher.group(1) : "";
 
     }
-    public void submit(String url, String jbCookie, String stCookie, String challenge, String username, String password) throws IOException {
+    public void submit(String jbCookie, String stCookie, String challenge, String username, String password) throws IOException {
+        String url = "https://account.jetbrains.com/oauth2/signin?_st=" + stCookie;
         RequestBody body = new FormBody.Builder()
                 .add("challenge", challenge)
                 .add("username", username)
@@ -48,6 +37,7 @@ public class Login {
                 .build();
 
         Response response = httpRequest.postRequest(url, "JSESSIONID-JBA=" + jbCookie + ";_st-JBA=" + stCookie, body);
-        System.out.println(response.code());
+        System.out.println(response.headers("Set-Cookie"));
+
     }
 }

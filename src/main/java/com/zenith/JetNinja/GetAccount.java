@@ -96,13 +96,11 @@ public class GetAccount implements CommandLineRunner {
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter url: ");
             String OauthUrl = sc.next();
-            List<String> loginUrls = login.getLoginUrl(OauthUrl, jbCookie, stCookie);
 
-            String submitUrl = loginUrls.get(0);
-            String challengeId = loginUrls.get(1);
+            String challengeId = login.getChallengeId(OauthUrl);
 
             //submit
-            login.submit(submitUrl, jbCookie, stCookie, challengeId, username, password);
+            login.submit(jbCookie, stCookie, challengeId, username, password);
 
         } catch (Exception e) {
             e.printStackTrace();
