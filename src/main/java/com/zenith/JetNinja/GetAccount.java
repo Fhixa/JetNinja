@@ -58,7 +58,7 @@ public class GetAccount implements CommandLineRunner {
             String email = generatedEmail.address();
             String token = generatedEmail.token();*/
 
-            Scanner sc = new Scanner(System.in);
+            Scanner sc = new Scanner(   System.in);
             System.out.print("Email And Token: ");
             String email = sc.next();
             String token = sc.next();
