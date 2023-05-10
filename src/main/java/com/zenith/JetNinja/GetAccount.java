@@ -9,6 +9,7 @@ import com.zenith.JetNinja.utils.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class GetAccount implements CommandLineRunner {
             preLoader.start();
             System.out.print("Preparing to bypass email verification....");
             boolean isSentVerificationEmail = sendVerificationEmail.send(email, stCookie);
-            if(isSentVerificationEmail){
+            if (isSentVerificationEmail) {
                 preLoader.stop();
                 Status.success();
                 System.out.print("Bypassing email verification....");
@@ -102,8 +103,11 @@ public class GetAccount implements CommandLineRunner {
             /*login.submit(jbCookie, stCookie, challengeId, username, password);*/
             System.out.println("username: " + Colors.TEXT_GREEN + username + Colors.TEXT_RESET + "\npassword: " + Colors.TEXT_GREEN + password + Colors.TEXT_RESET);
 
+        } catch (UnknownHostException unknownHostException) {
+            Status.error("\nSomething went wrong. Please check your internet connection and try again");
+
         } catch (Exception e) {
-           Status.error("\nSomething went wrong. Please check your internet connection and try again");
+            e.printStackTrace();
         }
 
     }
