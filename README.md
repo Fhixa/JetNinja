@@ -1,10 +1,10 @@
 # JetNinja
 
-JetNinja is a command-line interface (CLI) tool that automates the process of obtaining unlimited free trial accounts for all JetBrain IDEs. With JetNinja, developers can effortlessly explore the extensive features and capabilities of JetBrain's suite of IDEs without any limitations.
+JetNinja is a command-line interface (CLI) tool that automates the process of obtaining unlimited free trial accounts for all JetBrains IDEs. With JetNinja, developers can effortlessly explore the extensive features and capabilities of JetBrain's suite of IDEs without any limitations.
 
 ## Features
 
-- **Unlimited Trial Access**: JetNinja provides developers with the ability to generate unlimited free trial accounts for all JetBrain IDEs.
+- **Unlimited Trial Access**: JetNinja provides developers with the ability to generate unlimited free trial accounts for all JetBrains IDEs.
 - **Streamlined CLI Interface**: Access JetNinja's features and functionality through a simple and intuitive command-line interface.
 - **Effortless Workflow**: JetNinja simplifies the process of creating trial accounts, saving you time and effort.
 
@@ -17,10 +17,10 @@ To get started with JetNinja, follow these simple steps:
 
 ## Usage
 
-Once JetNinja is running, follow these instructions to generate trial accounts for JetBrain IDEs:
+Once JetNinja is running, follow these instructions to generate trial accounts for JetBrains IDEs:
 
 1. Follow the prompts and provide any required information.
-2. Voila! JetNinja will generate a trial account for your chosen JetBrain IDE.
+2. Voila! JetNinja will generate a trial account for all the JetBrain IDE.
 
 ## Contributing
 
