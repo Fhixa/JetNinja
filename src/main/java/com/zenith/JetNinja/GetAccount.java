@@ -10,10 +10,20 @@ import com.zenith.JetNinja.utils.automation.AutoUpdate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
 
 
 @Component
@@ -27,7 +37,7 @@ public class GetAccount implements CommandLineRunner {
     private  final Register register;
     private final AutoUpdate autoUpdate;
 
-    public GetAccount(SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader, HttpRequest httpRequest, Register register, Login login, AutoUpdate autoUpdate) {
+    public GetAccount(SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader, HttpRequest httpRequest, Register register, Login login, AutoUpdate autoUpdate ) {
         this.sendVerificationEmail = sendVerificationEmail;
         this.emailGetter = emailGetter;
         this.grabVerificationLink = grabVerificationLink;
@@ -50,6 +60,33 @@ boolean isLatest;
 
         if (!isLatest) {
             System.out.println("Less download the latest version");
+             final Properties properties = new Properties();
+
+
+
+            // Read the fileUrl from the config.properties file
+            try (InputStream inputStream = JetNinjaApplication.class.getClassLoader().getResourceAsStream("config.properties")) {
+                properties.load(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String latestJnUrl = properties.getProperty("latest_jn_url");
+
+            // Get the target folder (current working directory)
+            String targetFolder = System.getProperty("user.dir");
+
+            // Download the latest version JAR file
+            String fileName = getFileNameFromUrl("https://github.com/ZenithSuite/JetNinja/releases/download/JetNinjaV1/JetNinja.Beta.Release.-.Version.1.0.jar");
+            String filePath = targetFolder + "\\" + fileName;
+            try {
+
+                downloadFile("https://github.com/ZenithSuite/JetNinja/releases/download/JetNinjaV1/JetNinja.Beta.Release.-.Version.1.0.jar", filePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            runJarFile(filePath);
+
         }else {
 
             //tool starts here..
@@ -117,6 +154,33 @@ boolean isLatest;
                 Status.error("\nSomething went wrong... Please try again!");
             }
 
+        }
+
+    }
+
+    private static String getFileNameFromUrl(String fileUrl) {
+        String[] parts = fileUrl.split("/");
+        return parts[parts.length - 1];
+    }
+
+    private static void downloadFile(String fileUrl, String filePath) throws IOException {
+        URL url = new URL(fileUrl);
+        try (InputStream in = url.openStream()) {
+            long copied = Files.copy(in, Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
+            if (copied != -1) {
+                System.out.println("Successfully Downloaded");
+            }else {
+                System.out.println("Something went wrong");
+            }
+        }
+    }
+
+    private static void runJarFile(String jarFilePath) {
+        try {
+            Process process = Runtime.getRuntime().exec("java -jar " + jarFilePath);
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
