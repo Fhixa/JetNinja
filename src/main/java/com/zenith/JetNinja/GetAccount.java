@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 
 @Component
@@ -106,8 +107,10 @@ public class GetAccount implements CommandLineRunner {
         } catch (UnknownHostException unknownHostException) {
             Status.error("\nSomething went wrong. Please check your internet connection and try again");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+
+        catch (Exception e) {
+            Status.error("\nSomething went wrong... Please try again!");
         }
 
     }

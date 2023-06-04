@@ -8,6 +8,7 @@ import okhttp3.Response;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -84,7 +85,7 @@ public class Register {
         if(response.code() == 200) {
             return List.of(username, password);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 }
