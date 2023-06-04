@@ -1,28 +1,39 @@
 # JetNinja
 
-JetNinja is a Java-based automation tool for signing up for a free trial account of IntelliJ IDEA Ultimate, a popular integrated development environment (IDE) developed by JetBrains. The tool can also generate a temporary email address to use for the registration process to avoid the need for a real email address.
+JetNinja is a command-line interface (CLI) tool that automates the process of obtaining unlimited free trial accounts for all JetBrain IDEs. With JetNinja, developers can effortlessly explore the extensive features and capabilities of JetBrain's suite of IDEs without any limitations.
 
 ## Features
 
-- Automated sign-up process for IntelliJ IDEA Ultimate free trial account
-- Temporary email address generation for sign-up process
+- **Unlimited Trial Access**: JetNinja provides developers with the ability to generate unlimited free trial accounts for all JetBrain IDEs.
+- **Streamlined CLI Interface**: Access JetNinja's features and functionality through a simple and intuitive command-line interface.
+- **Effortless Workflow**: JetNinja simplifies the process of creating trial accounts, saving you time and effort.
+
+## Installation
+
+To get started with JetNinja, follow these simple steps:
+
+1. Download the latest release of JetNinja from the [Releases](https://github.com/ZenithSuite/JetNinja/releases) page.
+2. Run JetNinja using the following command: `java -jar JetNinja.jar`
 
 ## Usage
 
-1. Clone the JetNinja repository to your local machine.
-2. Install Java 11 or higher if not already installed.
-3. Build the project using Maven by running the command `mvn package` in the root directory of the project.
-4. Run the JetNinja tool using the command `java -jar target/JetNinja-1.0-SNAPSHOT.jar`.
+Once JetNinja is running, follow these instructions to generate trial accounts for JetBrain IDEs:
 
-## Configuration
+1. Follow the prompts and provide any required information.
+2. Voila! JetNinja will generate a trial account for your chosen JetBrain IDE.
 
-The JetNinja tool can be configured using the following environment variables:
+## Contributing
 
-- `JETNINJA_URL`: The URL of the IntelliJ IDEA Ultimate sign-up page. Default: `https://www.jetbrains.com/idea/download/`
-- `JETNINJA_API_URL`: The URL of the temporary email address API. Default: `https://api.tempmail.lol/auth/`
-- `JETNINJA_EMAIL_DOMAIN`: The email domain to use for the temporary email address. Default: `1secmail.com`
-- `JETNINJA_WAIT_TIME`: The time in seconds to wait between HTTP requests. Default: `5`
+Contributions are welcome! If you have any ideas, bug fixes, or improvements, please submit a pull request or open an issue.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+JetNinja is released under the [MIT License](https://github.com/ZenithSuite/JetNinja/blob/main/LICENSE).
+
+## Disclaimer
+
+Please note that JetNinja is intended for educational and testing purposes only. The use of generated trial accounts for commercial purposes may violate the terms of service of JetBrain IDEs.
+
+## Contact
+
+For any questions or inquiries, please reach out to the JetNinja team at zenithdevs.co@gmail.com.
