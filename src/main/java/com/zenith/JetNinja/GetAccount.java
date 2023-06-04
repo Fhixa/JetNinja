@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeoutException;
 
 
 @Component
@@ -24,7 +23,6 @@ public class GetAccount implements CommandLineRunner {
     private  final PreLoader preLoader;
     private final HttpRequest httpRequest;
     private  final Register register;
-    private final Login login;
 
     public GetAccount(SendVerificationEmail sendVerificationEmail, MailGetter emailGetter, GrabVerificationLink grabVerificationLink, TypeWriter typeWriter, PreLoader preLoader, HttpRequest httpRequest, Register register, Login login) {
         this.sendVerificationEmail = sendVerificationEmail;
@@ -34,7 +32,6 @@ public class GetAccount implements CommandLineRunner {
         this.preLoader = preLoader;
         this.httpRequest = httpRequest;
         this.register = register;
-        this.login = login;
     }
 
     @Override
@@ -94,14 +91,7 @@ public class GetAccount implements CommandLineRunner {
             String username = loginDetails.get(0);
             String password = loginDetails.get(1);
 
-            //login
-            /*Scanner sc = new Scanner(System.in);
-            System.out.print("Enter url: ");
-            String OauthUrl = sc.next();
-            String challengeId = login.getChallengeId(OauthUrl);
-*/
-            //submit
-            /*login.submit(jbCookie, stCookie, challengeId, username, password);*/
+
             System.out.println("username: " + Colors.TEXT_GREEN + username + Colors.TEXT_RESET + "\npassword: " + Colors.TEXT_GREEN + password + Colors.TEXT_RESET);
 
         } catch (UnknownHostException unknownHostException) {

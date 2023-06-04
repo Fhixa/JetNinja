@@ -84,4 +84,12 @@ public class HttpRequest {
             return response;
         }
     }
+
+    public Response getRequest(String url) throws IOException{
+        Request request = new Request.Builder().url(url).build();
+        try(Response response = client.newCall(request).execute()){
+            if (!response.isSuccessful()) throw  new IOException("Unexpected code " + response);
+            return  response;
+        }
+    }
 }

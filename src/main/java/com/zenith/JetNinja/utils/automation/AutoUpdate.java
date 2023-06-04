@@ -1,8 +1,16 @@
 package com.zenith.JetNinja.utils.automation;
 
+import com.zenith.JetNinja.utils.HttpRequest;
+
 public class AutoUpdate {
-int     version = 1;
-    void check_update(){
+
+    private final HttpRequest httpRequest;
+
+    public AutoUpdate(HttpRequest httpRequest) {
+        this.httpRequest = httpRequest;
+    }
+
+    void check_version_update(){
 
 
     }
