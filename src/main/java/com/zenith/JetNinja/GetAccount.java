@@ -52,7 +52,7 @@ public class GetAccount implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-            //tool starts here...
+            //tool starts here..
             typeWriter.type(Colors.TEXT_CYAN + "Developed by Zenith\n" + Colors.TEXT_RESET, 100);
             typeWriter.type("∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎\n", 100);
 
