@@ -7,6 +7,7 @@ import com.zenith.JetNinja.model.GeneratedEmail;
 import com.zenith.JetNinja.model.MailData;
 import com.zenith.JetNinja.utils.*;
 import com.zenith.JetNinja.utils.automation.AutoUpdate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -51,50 +52,14 @@ public class GetAccount implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-boolean isLatest;
-        try {
-            isLatest = autoUpdate.check_for_update();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (!isLatest) {
-            System.out.println("Less download the latest version");
-             final Properties properties = new Properties();
-
-
-
-            // Read the fileUrl from the config.properties file
-            try (InputStream inputStream = JetNinjaApplication.class.getClassLoader().getResourceAsStream("config.properties")) {
-                properties.load(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String latestJnUrl = properties.getProperty("latest_jn_url");
-
-            // Get the target folder (current working directory)
-            String targetFolder = System.getProperty("user.dir");
-
-            // Download the latest version JAR file
-            String fileName = getFileNameFromUrl("https://github.com/ZenithSuite/JetNinja/releases/download/JetNinjaV1/JetNinja.Beta.Release.-.Version.1.0.jar");
-            String filePath = targetFolder + "\\" + fileName;
-            try {
-
-                downloadFile("https://github.com/ZenithSuite/JetNinja/releases/download/JetNinjaV1/JetNinja.Beta.Release.-.Version.1.0.jar", filePath);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            runJarFile(filePath);
-
-        }else {
-
             //tool starts here..
             typeWriter.type(Colors.TEXT_CYAN + "Developed by Zenith\n" + Colors.TEXT_RESET, 100);
             typeWriter.type("∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎\n", 100);
 
 
             try {
+
+                autoUpdate.start();
                 //grab cookie
                 typeWriter.type("Checking requirements....", 50);
                 preLoader.start();
@@ -154,33 +119,8 @@ boolean isLatest;
                 Status.error("\nSomething went wrong... Please try again!");
             }
 
-        }
 
     }
 
-    private static String getFileNameFromUrl(String fileUrl) {
-        String[] parts = fileUrl.split("/");
-        return parts[parts.length - 1];
-    }
 
-    private static void downloadFile(String fileUrl, String filePath) throws IOException {
-        URL url = new URL(fileUrl);
-        try (InputStream in = url.openStream()) {
-            long copied = Files.copy(in, Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
-            if (copied != -1) {
-                System.out.println("Successfully Downloaded");
-            }else {
-                System.out.println("Something went wrong");
-            }
-        }
-    }
-
-    private static void runJarFile(String jarFilePath) {
-        try {
-            Process process = Runtime.getRuntime().exec("java -jar " + jarFilePath);
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

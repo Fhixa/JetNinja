@@ -4,3 +4,6 @@ spring:
     banner-mode: console
   banner:
     location: banner.txt
+application:
+  version: 1.0
+  latestJnUrl: https://github.com/ZenithSuite/JetNinja/releases/download/JetNinjaV1/JetNinja.Beta.Release.-.Version.1.0.jar
