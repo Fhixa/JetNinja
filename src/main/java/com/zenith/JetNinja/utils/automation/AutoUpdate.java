@@ -7,8 +7,10 @@ import com.zenith.JetNinja.utils.TypeWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -87,10 +89,45 @@ public class AutoUpdate {
     private static void runJarFile(String jarFilePath) {
         try {
             Process process = Runtime.getRuntime().exec("java -jar " + jarFilePath);
-            process.waitFor();
+
+            BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+            Thread outputThread = new Thread(() -> {
+                String line;
+                try {
+                    while ((line = outputReader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            outputThread.start();
+
+            Thread errorThread = new Thread(() -> {
+                String line;
+                try {
+                    while ((line = errorReader.readLine()) != null) {
+                        System.err.println(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            errorThread.start();
+
+            int exitCode = process.waitFor();
+
+            outputThread.join();
+            errorThread.join();
+
+            if (exitCode != 0) {
+                System.err.println("The JAR file exited with non-zero status: " + exitCode);
+            }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
 }
+
