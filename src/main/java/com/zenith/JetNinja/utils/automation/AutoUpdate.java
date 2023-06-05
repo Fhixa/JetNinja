@@ -13,6 +13,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class AutoUpdate {
@@ -24,7 +26,7 @@ public class AutoUpdate {
     @Value("${application.latestJnUrl}")
     String latestJnUrl;
     @Value("${application.version}")
-    double current_version;
+    String current_version;
 
     public AutoUpdate(HttpRequest httpRequest, TypeWriter typeWriter, PreLoader preLoader) {
         this.httpRequest = httpRequest;
@@ -35,11 +37,6 @@ public class AutoUpdate {
         typeWriter.type("Checking for update....", 50);
         preLoader.start();
         if (!isLatest()) {
-
-            /*final Properties properties = new Properties();*/
-
-            // Get the target folder (current working directory)
-            /*String targetFolder = System.getProperty("user.dir");*/
 
             // Download the latest version JAR file
             String fileName = getFileNameFromUrl(latestJnUrl);
@@ -58,13 +55,16 @@ public class AutoUpdate {
     }
    private boolean isLatest() throws IOException {
 
-        String response = httpRequest.getRequestVersion("https://raw.githubusercontent.com/ZenithSuite/JetNinja/master/src/main/resources/version.txt");
+        String response = httpRequest.getRequestVersion("https://raw.githubusercontent.com/ZenithSuite/JetNinja/master/src/main/resources/application.yaml");
 
-       String versionString = response.split("=")[1].trim();
-       double version = Double.parseDouble(versionString);
+       Pattern pattern = Pattern.compile("\\b\\d+(\\.\\d+)?\\b");
+       Matcher matcher = pattern.matcher(response);
 
-       return current_version == version;
-
+       if (matcher.find()) {
+           String version = matcher.group();
+           return current_version.equals(version);
+       }
+       return true;
    }
 
     private String getFileNameFromUrl(String fileUrl) {
