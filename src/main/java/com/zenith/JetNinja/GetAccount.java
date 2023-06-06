@@ -59,7 +59,7 @@ public class GetAccount implements CommandLineRunner {
             GeneratedEmail generatedEmail = emailGetter.generateMail("https://api.tempmail.lol/generate");
             preLoader.stop();
 
-            Status.success.get();
+            Status.success.run();
             String email = generatedEmail.address();
             String token = generatedEmail.token();
 
@@ -74,7 +74,7 @@ public class GetAccount implements CommandLineRunner {
             boolean isSentVerificationEmail = sendVerificationEmail.send(email, stCookie);
             if (isSentVerificationEmail) {
                 preLoader.stop();
-                Status.success.get();
+                Status.success.run();
                 System.out.print("Bypassing email verification....");
                 preLoader.start();
 
@@ -87,7 +87,7 @@ public class GetAccount implements CommandLineRunner {
             //grab link from email
             String verificationLink = grabVerificationLink.getLink(mailData);
             preLoader.stop();
-            Status.success.get();
+            Status.success.run();
 
             //get form submit url
             String badFormUrl = register.getFormUrl(verificationLink, jbCookie, stCookie);

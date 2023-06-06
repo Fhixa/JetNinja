@@ -104,7 +104,7 @@ public class AutoUpdate {
             runJarFile(filePath);
         }
         preLoader.stop();
-        Status.success.get();
+        Status.success.run();
     }
 
     private boolean isLatest() throws IOException {
