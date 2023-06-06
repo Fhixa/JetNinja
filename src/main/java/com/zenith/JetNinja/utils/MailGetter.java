@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
+
 @Component
 public class MailGetter {
     private final HttpRequest httpRequest;
@@ -18,14 +19,14 @@ public class MailGetter {
     }
 
     // Generates a new email with the given URL and returns the result as a GeneratedEmail object
-    public GeneratedEmail generateMail(String url)  {
+    public GeneratedEmail generateMail(String url) {
         Map<String, String> response = null;
         try {
             // Sends a GET request to the given URL with an empty request body
             response = httpRequest.getRequest(url, "");
         } catch (IOException e) {
             // If an IOException occurs, log an error message and exit the application
-            Status.error("Rate limited. Please use VPN or PROXY and try again.");
+            Status.error.accept("Rate limited. Please use VPN or PROXY and try again.");
             System.exit(0);
         }
         GsonBuilder builder = new GsonBuilder();
